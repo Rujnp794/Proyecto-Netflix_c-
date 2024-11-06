@@ -43,43 +43,99 @@ int main() {
     string nombre_archivo;
     Pelicula peliculas[100];
     Serie series[100];
+    menuPrincipal(peliculas, series, cant_peliculas, cant_series);
+    return 0;
+}
 
-    cout << "Bienvenido a Netflix" << endl;
-    cout << "¿Que desea hacer?" << endl;   
-    cout << "1. Cargar peliculas" << endl;
-    cout << "2. Cargar series" << endl;
-    cout << "3. Crear pelicula" << endl;
-    cout << "4. Crear serie" << endl;
-    cout << "5. Agregar capitulo a serie" << endl;
-    cout << "6. Salir" << endl;
+// Función para mostrar el menú principal y redirigir a las opciones seleccionadas
+void menuPrincipal(Pelicula peliculas[], Serie series[], int& cant_peliculas, int& cant_series) {
+    int opcion = 0;
+    string nombre_archivo;
+    do {
+        cout << "MENU PRINCIPAL" << endl;
+        cout << "1. Leer películas de un archivo" << endl;
+        cout << "2. Leer series de un archivo" << endl;
+        cout << "3. Crear una película" << endl;
+        cout << "4. Crear una serie" << endl;
+        cout << "5. Agregar un capítulo a una serie" << endl;
+        cout << "6. Listar capítulos de una serie por temporada" << endl;
+        cout << "7. Filtrar contenido" << endl;
+        cout << "8. Guardar películas ordenadas por año de estreno en un archivo" << endl;
+        cout << "9. Salir" << endl;
+        cout << "Ingrese la opción que desea realizar: ";
+        cin >> opcion;
 
-    cin >> opcion;
-    switch(opcion){
-    case 1:
-        {
-            cout << "Digite el nombre del archivo de peliculas." << endl;
-            cin >> nombre_archivo;
-            cant_peliculas = leerPeliculas(nombre_archivo, peliculas);
+        switch (opcion) {
+            case 1:
+                cout << "Ingrese el nombre del archivo de películas: ";
+                cin >> nombre_archivo;
+                cant_peliculas = leerPeliculas(nombre_archivo, peliculas);
+                break;
+            case 2:
+                cout << "Ingrese el nombre del archivo de series: ";
+                cin >> nombre_archivo;
+                cant_series = leerSeries(nombre_archivo, series);
+                break;
+            case 3:
+                crearPelicula(peliculas, cant_peliculas);
+                cant_peliculas++;
+                break;
+            case 4:
+                crearSerie(series, cant_series);
+                cant_series++;
+                break;
+            case 5:
+                agregarCapitulo(series, cant_series);
+                break;
+            case 6:
+                listarCapitulosPorTemporada(series, cant_series);
+                break;
+            case 7:
+                menuFiltrar(peliculas, series, cant_peliculas, cant_series);
+                break;
+            case 8:
+                guardarPeliculasOrdenadas(peliculas, cant_peliculas);
+                break;
+            case 9:
+                cout << "Saliendo del programa..." << endl;
+                break;
+            default:
+                cout << "Opción inválida, intente de nuevo." << endl;
+                break;
         }
-        break;
-    case 2:
-        {
-            cout << "Digite el nombre del archivo de series." << endl;
-            cin >> nombre_archivo;
-            cant_series = leerSeries(nombre_archivo, series);
-        }
-        break;
-    default:
-        cout << "Opcion no valida" << endl;
-        break;
-    case 3:
-        {
-            Pelicula peliculas[100];
-            crearPelicula(peliculas, cant_peliculas);
-            cant_peliculas++;
-        }
-    }
+    } while (opcion != 9);
+}
 
+// Función para mostrar el menú de filtrar y redirigir a las opciones seleccionadas
+void menuFiltrar(Pelicula peliculas[], Serie series[], int cant_peliculas, int cant_series) {
+    int opcion = 0;
+    do {
+        cout << "MENU FILTRAR" << endl;
+        cout << "1. Filtrar por género" << endl;
+        cout << "2. Filtrar por cantidad de capítulos" << endl;
+        cout << "3. Filtrar por rango de años de estreno" << endl;
+        cout << "4. Regresar al menú principal" << endl;
+        cout << "Ingrese la opción que desea realizar: ";
+        cin >> opcion;
+
+        switch (opcion) {
+            case 1:
+                filtrarPorGenero(peliculas, series, cant_peliculas, cant_series);
+                break;
+            case 2:
+                filtrarPorCantidadCapitulos(series, cant_series);
+                break;
+            case 3:
+                filtrarPorRangoAnos(peliculas, cant_peliculas);
+                break;
+            case 4:
+                cout << "Regresando al menú principal..." << endl;
+                break;
+            default:
+                cout << "Opción inválida, intente de nuevo." << endl;
+                break;
+        }
+    } while (opcion != 4);
 }
 
 //Funcion para leer las peliculas del archivo
