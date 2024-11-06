@@ -474,3 +474,40 @@ void filtrarPorCantidadCapitulos(Serie series[], int cant_series) {
     }
 }
 
+// Función para filtrar películas por rango de años de estreno
+void filtrarPorRangoAnos(Pelicula peliculas[], int cant_peliculas) {
+    int ano_inicial, ano_final;
+    bool valido = false;
+
+    // Solicitar un año inicial válido
+    do {
+        cout << "Ingrese el año inicial del rango de años de estreno: ";
+        cin >> ano_inicial;
+        if (ano_inicial <= 0) {
+            cout << "EL AÑO INICIAL DEBE SER MAYOR A 0, INTENTE DE NUEVO." << endl;
+        } else {
+            valido = true;
+        }
+    } while (!valido);
+
+    // Solicitar un año final válido
+    do {
+        cout << "Ingrese el año final del rango de años de estreno: ";
+        cin >> ano_final;
+        if (ano_final <= 0 || ano_final < ano_inicial) {
+            cout << "EL AÑO FINAL DEBE SER MAYOR A 0 Y MAYOR AL AÑO INICIAL, INTENTE DE NUEVO." << endl;
+        } else {
+            valido = true;
+        }
+    } while (!valido);
+
+    // Mostrar las películas que estén en el rango de años de estreno
+    cout << "Peliculas que estan en el rango de años de estreno " << ano_inicial << " - " << ano_final << ":" << endl;
+    for (int i = 0; i < cant_peliculas; i++) {
+        if (peliculas[i].ano_estreno >= ano_inicial && peliculas[i].ano_estreno <= ano_final) {
+            cout << peliculas[i].nombre << endl;
+        }
+    }
+}
+
+
