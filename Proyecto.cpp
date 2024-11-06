@@ -448,3 +448,29 @@ void filtrarPorGenero(Pelicula peliculas[], Serie series[], int cant_peliculas, 
         }
     }
 }
+
+// Función para filtrar series y películas por cantidad de capítulos
+void filtrarPorCantidadCapitulos(Serie series[], int cant_series) {
+    int cantidad_capitulos;
+    bool valido = false;
+
+    // Solicitar una cantidad de capítulos válida
+    do {
+        cout << "Ingrese la cantidad de capítulos por la que desea filtrar: ";
+        cin >> cantidad_capitulos;
+        if (cantidad_capitulos <= 0) {
+            cout << "LA CANTIDAD DE CAPITULOS DEBE SER MAYOR A 0, INTENTE DE NUEVO." << endl;
+        } else {
+            valido = true;
+        }
+    } while (!valido);
+
+    // Mostrar las series que tengan la cantidad de capítulos ingresada o menos
+    cout << "Series que tienen " << cantidad_capitulos << " capítulos o menos:" << endl;
+    for (int i = 0; i < cant_series; i++) {
+        if (series[i].cant_capitulos <= cantidad_capitulos) {
+            cout << "Nombre: " << series[i].nombre << endl;
+        }
+    }
+}
+
