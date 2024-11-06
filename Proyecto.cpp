@@ -187,17 +187,16 @@ void crearPelicula(Pelicula peliculas[], int cant_peliculas) {
         cin >> pelicula.duracion;
     } while (pelicula.duracion <= 0);
 
-    // Solicitar una cantidad de géneros válida para la pelicula
+    // Solicitar los géneros de la pelicula y preguntar si desea agregar más
+    int opcion = 0, i = 0;
     do {
-        cout << "Ingrese la cantidad de géneros de la pelicula: ";
-        cin >> pelicula.cant_generos;
-    } while (pelicula.cant_generos <= 0);
-
-    // Solicitar los géneros de la pelicula
-    for(int i = 0; i < pelicula.cant_generos; i++){
         cout << "Ingrese el genero " << i+1 << " de la pelicula: ";
         cin >> pelicula.generos[i];
-    }
+        i++;
+        cout << "Desea agregar otro genero? (1. Si, 2. No)" << endl;
+        cin >> opcion;
+    } while (opcion == 1);
+    pelicula.cant_generos = i;
 
     // Solicitar un año de estreno válido para la pelicula
     do {
