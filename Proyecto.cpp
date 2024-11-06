@@ -33,7 +33,7 @@ struct Serie{
 int leerPeliculas(string nombre_archivo, Pelicula peliculas[]);
 int leerSeries(string nombre_archivo, Serie series[]);
 void crearPelicula(Pelicula peliculas[]);
-void crearSeries(Serie series[]);
+void crearSerie(Serie series[]);
 bool sonIgualesSinMayusculas(string str1,string str2);
 void AgregarCapitulo(Serie series[]);
 bool existeSerie(string nombre_serie , Serie series[]);
@@ -174,7 +174,6 @@ int leerSeries(string nombre_archivo, Serie series[]) {
 void crearPelicula(Pelicula peliculas[], int cant_peliculas) {
     // Crear una instancia de Pelicula
     Pelicula pelicula;
-    bool valida = true;
 
     // Solicitar un nombre válido para la pelicula
     do {
@@ -240,59 +239,55 @@ bool sonIgualesSinMayusculas(string str1, string str2) {
 }
 
 // Crear una serie
-void crearSeries(Serie series[]) {
-    string nombre;
-    int cant_capitulos = 0;
-    int num_temporadas = 0;
-    string genero;
-    int opcion = 0;
-    bool valida = true;
-    // Solicitar los datos de la serie al usuario
-    cout<<"Ingrese el nombre de la serie: ";
-    cin>>nombre;
-    cout<<"Ingrese la cantidad de capitulos de la serie: ";
-    cin>>cant_capitulos;
-    cout<<"Ingrese el numero de temporadas de la serie: ";
-    cin>>num_temporadas;
-    cout<<"Ingrese el genero de la serie: ";
-    cin>>genero;
+void crearSerie(Serie series[], int cant_series) {
     // Crear una instancia de Serie
     Serie serie;
-    // Inicializar los atributos de la serie
-    serie.nombre = nombre;
-    serie.cant_capitulos = cant_capitulos;
-    serie.num_temporadas = num_temporadas;
-    serie.generos = genero;
 
-    //Revisar si la serie ya existe en la lista de series
-    for(int i = 0; i < 100; i++){
-        if(sonIgualesSinMayusculas(series[i].nombre, nombre)){
-            cout<<"La serie ya existe en la lista de series"<<endl;
-            valida = false;
+    // Solicitar un nombre válido para la serie
+    do {
+        cout << "Ingrese el nombre de la serie: ";
+        cin >> serie.nombre;
+    } while (!nombreValidoSerie(serie.nombre, series, cant_series));
+
+    // Solicitar un número de temporadas válido para la serie
+    do {
+        cout << "Ingrese el número de temporadas de la serie: ";
+        cin >> serie.num_temporadas;
+    } while (serie.num_temporadas <= 0);
+
+    // Solicitar los géneros de la serie y preguntar si desea agregar más
+    int opcion = 0, i = 0;
+    do {
+        cout << "Ingrese el genero " << i+1 << " de la serie: ";
+        cin >> serie.generos[i];
+        i++;
+        cout << "Desea agregar otro genero? (1. Si, 2. No)" << endl;
+        cin >> opcion;
+    } while (opcion == 1);
+    serie.cant_generos = i;
+    serie.cant_capitulos = 0;
+
+    // Todos los datos de la serie son validos, entonces podemos agregarla al arreglo
+    series[cant_series] = serie;
+}
+
+// Función para validar el nombre de la serie
+bool nombreValidoSerie(string nombre, Serie series[], int cant_series) {
+    if (nombre.empty()) {
+        cout << "EL NOMBRE DE LA SERIE NO PUEDE ESTAR VACIO, INTENTE DE NUEVO." << endl;
+        return false;
+    }
+    // Comparar el nombre de la serie con los nombres de las series existentes (en minúsculas)
+    for (int i = 0; i < cant_series; i++) {
+        if (sonIgualesSinMayusculas(series[i].nombre, nombre)) {
+            cout << "ESTA SERIE YA EXISTE, INTENTE DE NUEVO." << endl;
+            return false;
         }
     }
-    
-    //Validar que no tenga datos raros o negativos
-    if(cant_capitulos < 0 || num_temporadas < 0 || nombre.empty()){
-        cout<<"LOS DATOS INGRESADOS SON INCORRECTOS, INTENTE DE NUEVO."<<endl;
-        valida = false;
-    }
-
-    // si la pelicula es valida en cualquier aspecto ahi si se agrega al arreglo
-    if(valida){
-        // Agregar la serie al arreglo de series en la primera posicion disponible si la serie fue valida
-        for(int i = 0; i < 100; i++){
-            if(series[i].nombre == ""){
-                series[i] = serie;
-                break;
-            }
-        }
-        cout<<"La serie fue agregada exitosamente"<<endl;
-    }
+    return true;
 }
 
 //Añadir un nuevo capitulo a una serie que ya existe
-
 void AgregarCapitulo(Serie series[]){
     string nombre_serie;
     string nombre_capitulo;
