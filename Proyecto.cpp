@@ -35,7 +35,7 @@ int leerSeries(string nombre_archivo, Serie series[]);
 void crearPelicula(Pelicula peliculas[]);
 void crearSerie(Serie series[]);
 bool sonIgualesSinMayusculas(string str1,string str2);
-void AgregarCapitulo(Serie series[]);
+void agregarCapitulo(Serie series[]);
 bool existeSerie(string nombre_serie , Serie series[]);
 
 int main() {
@@ -208,7 +208,7 @@ void crearPelicula(Pelicula peliculas[], int cant_peliculas) {
     peliculas[cant_peliculas] = pelicula;
 }
 
-// Función para validar el nombre de la pelicula
+// Función para validar que el nombre de la pelicula no esté vacío y no exista ya
 bool nombreValidoPelicula(string nombre, Pelicula peliculas[], int cant_peliculas) {
     if (nombre.empty()) {
         cout << "EL NOMBRE DE LA PELICULA NO PUEDE ESTAR VACIO, INTENTE DE NUEVO." << endl;
@@ -270,7 +270,7 @@ void crearSerie(Serie series[], int cant_series) {
     series[cant_series] = serie;
 }
 
-// Función para validar el nombre de la serie
+// Función para validar que el nombre de la serie no esté vacío y no exista ya
 bool nombreValidoSerie(string nombre, Serie series[], int cant_series) {
     if (nombre.empty()) {
         cout << "EL NOMBRE DE LA SERIE NO PUEDE ESTAR VACIO, INTENTE DE NUEVO." << endl;
@@ -287,71 +287,81 @@ bool nombreValidoSerie(string nombre, Serie series[], int cant_series) {
 }
 
 //Añadir un nuevo capitulo a una serie que ya existe
-void AgregarCapitulo(Serie series[]){
+void agregarCapitulo(Serie series[]){
+    // Crear una instancia de Capitulo
+    Capitulo capitulo;
     string nombre_serie;
-    string nombre_capitulo;
-    int duracion = 0;
-    int temporada = 0;
-    bool parar = false;
-    int opcion = 0;
-    cout<<"Ingrese el nombre de la serie a la que desea agregar un capitulo: ";
-    cin>>nombre_serie;
-    if(nombre_serie.empty()){
-        cout<<"El nombre de la serie no puede estar vacio"<<endl;
-        return;
-    }
-    else if(!existeSerie(nombre_serie , series)){
-        cout<<"La serie no existe en la lista de series"<<endl;
-        return;
-    }
-    //Digitar datos del capitulo
-    while(!parar){
-    cout<<"Digite el nombre del capitulo: ";
-    cin>>nombre_capitulo;
-    cout<<"Digite la duracion del capitulo: ";
-    cin>>duracion;
-    cout<<"Digite la temporada del capitulo: ";
-    cin>>temporada;
+    bool valido = false;
+    int pos_serie = 0, opcion = 0;
 
-    //Validar que no tenga datos raros o negativos
-    if(duracion < 0 || temporada < 0 || nombre_capitulo.empty()){
-        cout<<"LOS DATOS INGRESADOS SON INCORRECTOS, INTENTE DE NUEVO."<<endl;
-    }
-    else{
-        cout<<"El capitulo fue agregado exitosamente"<<endl;
-        parar = true;
-        //Agregar el capitulo a la serie
-        for(int i = 0; i < 100; i++){
-            if(sonIgualesSinMayusculas(series[i].nombre, nombre_serie)){
-                for(int j = 0; j < 100; j++){
-                    if(series[i].capitulos[j].nombre == ""){
-                        series[i].capitulos[j].nombre = nombre_capitulo;
-                        series[i].capitulos[j].duracion = duracion;
-                        series[i].capitulos[j].temporada = temporada;
-                        break;
-                    }
-                }
-                series[i].cant_capitulos++;
+    // Solicitar el nombre de la serie a la que se le quiere agregar un capítulo
+    do {
+        cout << "Ingrese el nombre de la serie a la que desea agregar un capítulo: ";
+        cin >> nombre_serie;
+        if (nombre_serie.empty()) {
+            cout << "EL NOMBRE DE LA SERIE NO PUEDE ESTAR VACIO, INTENTE DE NUEVO." << endl;
+        } else {
+            pos_serie = buscarSerie(nombre_serie, series);
+            if (pos_serie == -1) {
+                cout << "ESTA SERIE NO EXISTE, INTENTE DE NUEVO." << endl;
+            } else {
+                valido = true;
             }
-            
         }
-    }
-    cout << "Desea agregar otro capitulo? (1. Si, 2. No)" << endl;
-    cin >> opcion;
-    if(opcion == 2){
-        parar = true;
-    }
-    }
+    } while (!valido);
+
+    // Solicitar un nuevo capítulo hasta que el usuario decida parar
+    do {
+        valido = false;
+        // Solicitar un nombre válido para el capítulo
+        do {
+            cout << "Ingrese el nombre del capítulo: ";
+            cin >> capitulo.nombre;
+        } while (!nombreValidoCapitulo(capitulo.nombre, series[pos_serie].capitulos, series[pos_serie].cant_capitulos));
+        // Solicitar una duración válida para el capítulo
+        do {
+            cout << "Ingrese la duración del capítulo: ";
+            cin >> capitulo.duracion;
+        } while (capitulo.duracion <= 0);
+        // Solicitar una temporada válida para el capítulo
+        do {
+            cout << "Ingrese la temporada del capítulo: ";
+            cin >> capitulo.temporada;
+        } while (capitulo.temporada <= 0 || capitulo.temporada > series[pos_serie].num_temporadas);
+        // Todos los datos del capítulo son válidos, entonces podemos agregarlo a la serie
+        series[pos_serie].capitulos[series[pos_serie].cant_capitulos] = capitulo;
+        // Y aumentar la cantidad de capítulos de la serie
+        series[pos_serie].cant_capitulos++;
+        // Preguntar si desea agregar otro capítulo
+        cout << "Capítulo(s) agregado(s) exitosamente." << endl;
+        cout << "Desea agregar otro capítulo a la serie " << series[pos_serie].nombre << "? (1. Si, 2. No)" << endl;
+        cin >> opcion;
+    } while (opcion == 1);
 }
 
-//Funcion para verificar si una serie existe en la lista de series
-
-bool existeSerie(string nombre_serie , Serie series[]){
-    for(int i = 0; i < 100; i++){
+//Funcion para buscar una serie en la lista de series y retornar su posicion
+int buscarSerie(string nombre_serie , Serie series[], int cant_series){
+    for(int i = 0; i < cant_series; i++){
         if(sonIgualesSinMayusculas(series[i].nombre, nombre_serie)){
-            return true;
+            return i;
         }
     }
-    return false;
+    return -1;
+}
+
+// Funcion para validar que el nombre del capitulo no este vacio y no exista ya
+bool nombreValidoCapitulo(string nombre, Capitulo capitulos[], int cant_capitulos) {
+    if (nombre.empty()) {
+        cout << "EL NOMBRE DEL CAPITULO NO PUEDE ESTAR VACIO, INTENTE DE NUEVO." << endl;
+        return false;
+    }
+    // Comparar el nombre del capitulo con los nombres de los capitulos existentes (en minúsculas)
+    for (int i = 0; i < cant_capitulos; i++) {
+        if (sonIgualesSinMayusculas(capitulos[i].nombre, nombre)) {
+            cout << "ESTE CAPITULO YA EXISTE, INTENTE DE NUEVO." << endl;
+            return false;
+        }
+    }
+    return true;
 }
 
