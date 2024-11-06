@@ -364,3 +364,48 @@ bool nombreValidoCapitulo(string nombre, Capitulo capitulos[], int cant_capitulo
     return true;
 }
 
+// Función para listar los capítulos de una serie y una temporada
+void listarCapitulosPorTemporada(Serie series[], int cant_series) {
+    string nombre_serie;
+    int temporada;
+    bool valido = false;
+    int pos_serie = -1;
+
+    // Solicitar el nombre de la serie a la que se le quiere listar los capítulos
+    do {
+        cout << "Ingrese el nombre de la serie a la que desea listar los capítulos: ";
+        cin >> nombre_serie;
+        if (nombre_serie.empty()) {
+            cout << "EL NOMBRE DE LA SERIE NO PUEDE ESTAR VACIO, INTENTE DE NUEVO." << endl;
+        } else {
+            pos_serie = buscarSerie(nombre_serie, series, cant_series);
+            if (pos_serie == -1) {
+                cout << "LA SERIE INGRESADA NO EXISTE, INTENTE DE NUEVO." << endl;
+            } else {
+                valido = true;
+            }
+        }
+    } while (!valido);
+
+    // Solicitar la temporada de la que se quieren listar los capítulos
+    do {
+        cout << "Ingrese la temporada de la que desea listar los capítulos: ";
+        cin >> temporada;
+        if (temporada <= 0 || temporada > series[pos_serie].num_temporadas) {
+            cout << "LA TEMPORADA INGRESADA NO EXISTE, INTENTE DE NUEVO." << endl;
+        }
+    } while (temporada <= 0 || temporada > series[pos_serie].num_temporadas);
+
+    // Si la serie no tiene capítulos, mostrar un mensaje
+    if (series[pos_serie].cant_capitulos == 0) {
+        cout << "A la serie " << series[pos_serie].nombre << " no le han agregado capítulos aún." << endl;
+    } else {
+        cout << "Capítulos de la temporada " << temporada << " de la serie " << series[pos_serie].nombre << ":" << endl;
+        for (int i = 0; i < series[pos_serie].cant_capitulos; i++) {
+            if (series[pos_serie].capitulos[i].temporada == temporada) {
+                cout << "Nombre: " << series[pos_serie].capitulos[i].nombre << endl;
+                cout << "Duración: " << series[pos_serie].capitulos[i].duracion << " minutos" << endl;
+            }
+        }
+    }
+}
