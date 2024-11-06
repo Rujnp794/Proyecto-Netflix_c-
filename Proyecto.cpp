@@ -8,28 +8,30 @@ using namespace std;
 struct Pelicula {
     string nombre;
     int duracion; //en minutos
-    string generos;
+    int cant_generos;
+    string generos[100];
     int ano_estreno;
 };
 
 struct Capitulo{
     string nombre;
     int duracion; //en minutos
-    int Temporada;
+    int temporada;
 };
 
 struct Serie{
     string nombre;
-    int cant_capitulos;
     int num_temporadas;
-    string generos;
+    int cant_generos;
+    string generos[100];
+    int cant_capitulos;
     Capitulo capitulos[100];
 };
 
 //Declaracion Funciones
 
-void leerPeliculas(string nombre_archivo, Pelicula peliculas[]);
-void leerSeries(string nombre_archivo, Serie series[]);
+int leerPeliculas(string nombre_archivo, Pelicula peliculas[]);
+int leerSeries(string nombre_archivo, Serie series[]);
 void crearPelicula(Pelicula peliculas[]);
 void crearSeries(Serie series[]);
 bool sonIgualesSinMayusculas(string str1,string str2);
@@ -37,8 +39,10 @@ void AgregarCapitulo(Serie series[]);
 bool existeSerie(string nombre_serie , Serie series[]);
 
 int main() {
-    int opcion = 0;
+    int opcion = 0, cant_peliculas = 0, cant_series = 0;
     string nombre_archivo;
+    Pelicula peliculas[100];
+    Serie series[100];
 
     cout << "Bienvenido a Netflix" << endl;
     cout << "¿Que desea hacer?" << endl;   
@@ -55,16 +59,14 @@ int main() {
         {
             cout << "Digite el nombre del archivo de peliculas." << endl;
             cin >> nombre_archivo;
-            Pelicula peliculas[100];
-            leerPeliculas(nombre_archivo, peliculas);
+            cant_peliculas = leerPeliculas(nombre_archivo, peliculas);
         }
         break;
     case 2:
         {
             cout << "Digite el nombre del archivo de series." << endl;
             cin >> nombre_archivo;
-            Serie series[100];
-            leerSeries(nombre_archivo, series);
+            cant_series = leerSeries(nombre_archivo, series);
         }
         break;
     default:
@@ -80,8 +82,7 @@ int main() {
 }
 
 //Funcion para leer las peliculas del archivo
-
-void leerPeliculas(string nombre_archivo, Pelicula peliculas[]) {
+int leerPeliculas(string nombre_archivo, Pelicula peliculas[]) {
     ifstream archivo(nombre_archivo);
     string linea;
     int contador = 0;
@@ -98,28 +99,35 @@ void leerPeliculas(string nombre_archivo, Pelicula peliculas[]) {
     while (getline(archivo, linea) ) {
         stringstream ss(linea);
         string nombre, duracion, ano_estreno, genero;
+        int cant_generos = 0;
 
         // Leer los datos separados por comas
         getline(ss, nombre, ',');
         getline(ss, duracion, ',');
         getline(ss, ano_estreno, ',');
-        getline(ss, genero, ',');
+
+        // Leer el resto de la línea para obtener los generos
+        while(getline(ss, genero, ',')){
+            peliculas[contador].generos[cant_generos] = genero;
+            cant_generos++;
+        }
 
         // Crear una instancia de Pelicula y agregarla al arreglo
         peliculas[contador].nombre = nombre;
         peliculas[contador].duracion = stoi(duracion);
         peliculas[contador].ano_estreno = stoi(ano_estreno);  
-        peliculas[contador].generos = stoi(genero);
+        peliculas[contador].cant_generos = cant_generos;
     
         contador++;
     }
 
     archivo.close();
+
+    return contador;
 }
 
 //Funcion para leer las series del archivo
-
-void leerSeries(string nombre_archivo, Serie series[]) {
+int leerSeries(string nombre_archivo, Serie series[]) {
     ifstream archivo(nombre_archivo);
     string linea;
     int contador = 0;
@@ -135,29 +143,33 @@ void leerSeries(string nombre_archivo, Serie series[]) {
     // Leer cada línea del archivo
     while (getline(archivo, linea) ) {
         stringstream ss(linea);
-        string nombre, cant_capitulos, num_temporadas, genero;
+        string nombre, num_temporadas, genero;
+        int cant_generos = 0;
 
         // Leer los datos separados por comas
         getline(ss, nombre, ',');
-        getline(ss, cant_capitulos, ',');
         getline(ss, num_temporadas, ',');
-        getline(ss, genero, ',');
+        
+        // Leer el resto de la línea para obtener los generos
+        while(getline(ss, genero, ',')){
+            series[contador].generos[cant_generos] = genero;
+            cant_generos++;
+        }
 
         // Crear una instancia de Serie y agregarla al arreglo
         series[contador].nombre = nombre;
-        series[contador].cant_capitulos = stoi(cant_capitulos);
         series[contador].num_temporadas = stoi(num_temporadas);
-        series[contador].generos = stoi(genero);
-
+        series[contador].cant_generos = cant_generos;
 
         contador++;
     }
 
     archivo.close();
+
+    return contador;
 }
 
 // Crear una pelicula
-
 void crearPelicula(Pelicula peliculas[]) {
     string nombre;
     int duracion = 0;
@@ -317,7 +329,7 @@ void AgregarCapitulo(Serie series[]){
                     if(series[i].capitulos[j].nombre == ""){
                         series[i].capitulos[j].nombre = nombre_capitulo;
                         series[i].capitulos[j].duracion = duracion;
-                        series[i].capitulos[j].Temporada = temporada;
+                        series[i].capitulos[j].temporada = temporada;
                         break;
                     }
                 }
