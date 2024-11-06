@@ -149,8 +149,7 @@ int leerPeliculas(Pelicula peliculas[]) {
     int contador = 0;
 
     cout << "Ingrese el nombre del archivo de películas: ";
-    cin.ignore();
-    getline(cin, nombre_archivo);
+    getline(cin >> ws, nombre_archivo);
 
     ifstream archivo(nombre_archivo);
 
@@ -199,8 +198,7 @@ int leerSeries(Serie series[]) {
     int contador = 0;
 
     cout << "Ingrese el nombre del archivo de series: ";
-    cin.ignore();
-    getline(cin, nombre_archivo);
+    getline(cin >> ws, nombre_archivo);
 
     ifstream archivo(nombre_archivo);
 
@@ -249,7 +247,7 @@ void crearPelicula(Pelicula peliculas[], int cant_peliculas) {
     // Solicitar un nombre válido para la pelicula
     do {
         cout << "Ingrese el nombre de la pelicula: ";
-        cin >> pelicula.nombre;
+        getline(cin >> ws, pelicula.nombre);
     } while (!nombreValidoPelicula(pelicula.nombre, peliculas, cant_peliculas));
 
     // Solicitar una duración válida para la pelicula
@@ -262,7 +260,7 @@ void crearPelicula(Pelicula peliculas[], int cant_peliculas) {
     int opcion = 0, i = 0;
     do {
         cout << "Ingrese el genero " << i+1 << " de la pelicula: ";
-        cin >> pelicula.generos[i];
+        getline(cin >> ws, pelicula.generos[i]);
         i++;
         cout << "Desea agregar otro genero? (1. Si, 2. No)" << endl;
         cin >> opcion;
@@ -316,7 +314,7 @@ void crearSerie(Serie series[], int cant_series) {
     // Solicitar un nombre válido para la serie
     do {
         cout << "Ingrese el nombre de la serie: ";
-        cin >> serie.nombre;
+        getline(cin >> ws, serie.nombre);
     } while (!nombreValidoSerie(serie.nombre, series, cant_series));
 
     // Solicitar un número de temporadas válido para la serie
@@ -329,7 +327,7 @@ void crearSerie(Serie series[], int cant_series) {
     int opcion = 0, i = 0;
     do {
         cout << "Ingrese el genero " << i+1 << " de la serie: ";
-        cin >> serie.generos[i];
+        getline(cin >> ws, serie.generos[i]);
         i++;
         cout << "Desea agregar otro genero? (1. Si, 2. No)" << endl;
         cin >> opcion;
@@ -368,7 +366,7 @@ void agregarCapitulo(Serie series[], int cant_series) {
     // Solicitar el nombre de la serie a la que se le quiere agregar un capítulo
     do {
         cout << "Ingrese el nombre de la serie a la que desea agregar un capítulo: ";
-        cin >> nombre_serie;
+        getline(cin >> ws, nombre_serie);
         if (nombre_serie.empty()) {
             cout << "EL NOMBRE DE LA SERIE NO PUEDE ESTAR VACIO, INTENTE DE NUEVO." << endl;
         } else {
@@ -386,7 +384,7 @@ void agregarCapitulo(Serie series[], int cant_series) {
         // Solicitar un nombre válido para el capítulo
         do {
             cout << "Ingrese el nombre del capítulo: ";
-            cin >> capitulo.nombre;
+            getline(cin >> ws, capitulo.nombre);
         } while (!nombreValidoCapitulo(capitulo.nombre, series[pos_serie].capitulos, series[pos_serie].cant_capitulos));
         // Solicitar una duración válida para el capítulo
         do {
@@ -445,7 +443,7 @@ void listarCapitulosPorTemporada(Serie series[], int cant_series) {
     // Solicitar el nombre de la serie a la que se le quiere listar los capítulos
     do {
         cout << "Ingrese el nombre de la serie a la que desea listar los capítulos: ";
-        cin >> nombre_serie;
+        getline(cin >> ws, nombre_serie);
         if (nombre_serie.empty()) {
             cout << "EL NOMBRE DE LA SERIE NO PUEDE ESTAR VACIO, INTENTE DE NUEVO." << endl;
         } else {
@@ -489,7 +487,7 @@ void filtrarPorGenero(Pelicula peliculas[], Serie series[], int cant_peliculas, 
     // Solicitar un género válido
     do {
         cout << "Ingrese el genero por el que desea filtrar: ";
-        cin >> genero;
+        getline(cin >> ws, genero);
         if (genero.empty()) {
             cout << "EL GENERO NO PUEDE ESTAR VACIO, INTENTE DE NUEVO." << endl;
         } else {
