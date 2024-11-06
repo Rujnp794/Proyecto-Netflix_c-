@@ -29,14 +29,24 @@ struct Serie{
 };
 
 //Declaracion Funciones
-
+void menuPrincipal(Pelicula peliculas[], Serie series[], int cant_peliculas, int cant_series);
+void menuFiltrar(Pelicula peliculas[], Serie series[], int cant_peliculas, int cant_series);
 int leerPeliculas(string nombre_archivo, Pelicula peliculas[]);
 int leerSeries(string nombre_archivo, Serie series[]);
-void crearPelicula(Pelicula peliculas[]);
-void crearSerie(Serie series[]);
-bool sonIgualesSinMayusculas(string str1,string str2);
-void agregarCapitulo(Serie series[]);
-bool existeSerie(string nombre_serie , Serie series[]);
+void crearPelicula(Pelicula peliculas[], int cant_peliculas);
+bool nombreValidoPelicula(string nombre, Pelicula peliculas[], int cant_peliculas);
+bool sonIgualesSinMayusculas(string str1, string str2);
+void crearSerie(Serie series[], int cant_series);
+bool nombreValidoSerie(string nombre, Serie series[], int cant_series);
+void agregarCapitulo(Serie series[], int cant_series);
+int buscarSerie(string nombre_serie, Serie series[], int cant_series);
+bool nombreValidoCapitulo(string nombre, Capitulo capitulos[], int cant_capitulos);
+void listarCapitulosPorTemporada(Serie series[], int cant_series);
+void filtrarPorGenero(Pelicula peliculas[], Serie series[], int cant_peliculas, int cant_series);
+void filtrarPorCantidadCapitulos(Serie series[], int cant_series);
+void filtrarPorRangoAnos(Pelicula peliculas[], int cant_peliculas);
+void guardarPeliculasOrdenadas(Pelicula peliculas[], int cant_peliculas);
+void ordenarPeliculas(Pelicula peliculas[], int cant_peliculas);
 
 int main() {
     int opcion = 0, cant_peliculas = 0, cant_series = 0;
@@ -48,7 +58,7 @@ int main() {
 }
 
 // Función para mostrar el menú principal y redirigir a las opciones seleccionadas
-void menuPrincipal(Pelicula peliculas[], Serie series[], int& cant_peliculas, int& cant_series) {
+void menuPrincipal(Pelicula peliculas[], Serie series[], int cant_peliculas, int cant_series) {
     int opcion = 0;
     string nombre_archivo;
     do {
