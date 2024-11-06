@@ -1,0 +1,16 @@
+Nombre serie,numero temporadas,genero1,genero2,genero3
+Brooklyn Nine-Nine,7,Comedia
+The Mandalorian,3,Ciencia Ficción,Aventura,Acción
+Breaking Bad,5,Drama,Crimen,Thriller
+Stranger Things,4,Ciencia Ficción,Terror,Misterio
+The Crown,6,Drama,Historia
+Friends,10,Comedia,Romance
+Game of Thrones,8,Fantasía,Drama,Aventura
+Sherlock,4,Crimen,Misterio,Drama
+The Office,9,Comedia
+The Witcher,3,Fantasía,Aventura,Acción
+Black Mirror,5,Ciencia Ficción,Drama,Terror
+Money Heist,5,Crimen,Thriller,Drama
+The Boys,3,Acción,Comedia,Ciencia Ficción
+Peaky Blinders,6,Crimen,Drama
+Westworld,4,Ciencia Ficción,Drama,Misterio

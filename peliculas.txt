@@ -1,0 +1,6 @@
+nombre,duracion,ano_estreno,genero1,genero2,genero3
+Inception,148,2010,Ciencia Ficcion,Thriller,Accion
+Matrix,136,1999,Ciencia Ficcion,Accion
+El Padrino,175,1972,Crimen,Drama
+Interestelar,169,2014,Ciencia Ficcion,Aventura,Drama
+Batman - El Caballero de la Noche,152,2008,Accion,Crimen,Drama
