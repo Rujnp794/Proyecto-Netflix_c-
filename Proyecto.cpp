@@ -75,7 +75,8 @@ int main() {
     case 3:
         {
             Pelicula peliculas[100];
-            crearPelicula(peliculas);
+            crearPelicula(peliculas, cant_peliculas);
+            cant_peliculas++;
         }
     }
 
@@ -170,63 +171,67 @@ int leerSeries(string nombre_archivo, Serie series[]) {
 }
 
 // Crear una pelicula
-void crearPelicula(Pelicula peliculas[]) {
-    string nombre;
-    int duracion = 0;
-    string genero;
-    int ano_estreno = 0;
-    int opcion = 0;
-    bool valida = true;
-    // Solicitar los datos de la pelicula al usuario
-    cout<<"Ingrese el nombre de la pelicula: ";
-    cin>>nombre;
-    cout<<"Ingrese la duracion de la pelicula: ";
-    cin>>duracion;
-    cout<<"Ingrese el genero de la pelicula: ";
-    cin>>genero;
-    cout<<"Ingrese el año de estreno de la pelicula: ";
-    cin>>ano_estreno;
+void crearPelicula(Pelicula peliculas[], int cant_peliculas) {
     // Crear una instancia de Pelicula
     Pelicula pelicula;
-    // Inicializar los atributos de la pelicula
-    pelicula.nombre = nombre;
-    pelicula.duracion = duracion;
-    pelicula.generos = genero;
-    pelicula.ano_estreno = ano_estreno;
+    bool valida = true;
 
-    //Revisar si la pelicula ya existe en la lista de peliculas
-    for(int i = 0; i < 100; i++){
-        if(sonIgualesSinMayusculas(peliculas[i].nombre, nombre)){
-            cout<<"La pelicula ya existe en la lista de peliculas"<<endl;
-            valida = false;
-        }
+    // Solicitar un nombre válido para la pelicula
+    do {
+        cout << "Ingrese el nombre de la pelicula: ";
+        cin >> pelicula.nombre;
+    } while (!nombreValidoPelicula(pelicula.nombre, peliculas, cant_peliculas));
+
+    // Solicitar una duración válida para la pelicula
+    do {
+        cout << "Ingrese la duración de la pelicula: ";
+        cin >> pelicula.duracion;
+    } while (pelicula.duracion <= 0);
+
+    // Solicitar una cantidad de géneros válida para la pelicula
+    do {
+        cout << "Ingrese la cantidad de géneros de la pelicula: ";
+        cin >> pelicula.cant_generos;
+    } while (pelicula.cant_generos <= 0);
+
+    // Solicitar los géneros de la pelicula
+    for(int i = 0; i < pelicula.cant_generos; i++){
+        cout << "Ingrese el genero " << i+1 << " de la pelicula: ";
+        cin >> pelicula.generos[i];
     }
+
+    // Solicitar un año de estreno válido para la pelicula
+    do {
+        cout << "Ingrese el año de estreno de la pelicula: ";
+        cin >> pelicula.ano_estreno;
+    } while (pelicula.ano_estreno <= 0);
     
-    //Validar que no tenga datos raros o negativos
-
-    if(duracion < 0 || ano_estreno < 0 || nombre.empty()){
-        cout<<"LOS DATOS INGRESADOS SON INCORRECTOS, INTENTE DE NUEVO."<<endl;
-        valida = false;
-    }
-    // si la pelicula es valida en cualquier aspecto ahi si se agrega al arreglo
-    if(valida){
-        // Agregar la pelicula al arreglo de peliculas en la primera posicion disponible si la pelicula fue valida
-        for(int i = 0; i < 100; i++){
-            if(peliculas[i].nombre == ""){
-                peliculas[i] = pelicula;
-                break;
-            }
-        }
-        cout<<"La pelicula fue agregada exitosamente"<<endl;
-    }
+    // Todos los datos de la pelicula son validos, entonces podemos agregarla al arreglo
+    peliculas[cant_peliculas] = pelicula;
 }
 
-//funcion para validar si dos strings son iguales sin importar mayusculas
-bool sonIgualesSinMayusculas(string str1,string str2) {
-    if (str1.size() != str2.size()) {
+// Función para validar el nombre de la pelicula
+bool nombreValidoPelicula(string nombre, Pelicula peliculas[], int cant_peliculas) {
+    if (nombre.empty()) {
+        cout << "EL NOMBRE DE LA PELICULA NO PUEDE ESTAR VACIO, INTENTE DE NUEVO." << endl;
         return false;
     }
-    for (size_t i = 0; i < str1.size(); ++i) {
+    // Comparar el nombre de la pelicula con los nombres de las peliculas existentes (en minúsculas)
+    for (int i = 0; i < cant_peliculas; i++) {
+        if (sonIgualesSinMayusculas(peliculas[i].nombre, nombre)) {
+            cout << "ESTA PELICULA YA EXISTE, INTENTE DE NUEVO." << endl;
+            return false;
+        }
+    }
+    return true;
+}
+
+// Función para comparar dos strings sin importar mayúsculas y minúsculas
+bool sonIgualesSinMayusculas(string str1, string str2) {
+    if (str1.length() != str2.length()) {
+        return false;
+    }
+    for (int i = 0; i < str1.length(); i++) {
         if (tolower(str1[i]) != tolower(str2[i])) {
             return false;
         }
@@ -235,7 +240,6 @@ bool sonIgualesSinMayusculas(string str1,string str2) {
 }
 
 // Crear una serie
-
 void crearSeries(Serie series[]) {
     string nombre;
     int cant_capitulos = 0;
