@@ -510,6 +510,33 @@ void filtrarPorRangoAnos(Pelicula peliculas[], int cant_peliculas) {
     }
 }
 
+// Función para guardar películas ordenadas por año de estreno en un archivo
+void guardarPeliculasOrdenadas(Pelicula peliculas[], int cant_peliculas) {
+    int opcion = 0;
+    // Preguntar si desea guardar las películas en orden ascendente o descendente
+    do {
+        cout << "Desea guardar las películas en orden ascendente o descendente? (1. Ascendente, 2. Descendente)" << endl;
+        cin >> opcion;
+    } while (opcion != 1 && opcion != 2);
+
+    // Sin importar cuál opción haya elegido se ordena ascendentemente
+    ordenarPeliculas(peliculas, cant_peliculas);
+
+    ofstream archivo("peliculas_ordenadas.txt");
+    if (opcion == 1) {
+        // Si seleccionó orden ascendente se escribe normal
+        for (int i = 0; i < cant_peliculas; i++) {
+            archivo << peliculas[i].nombre << " - " << peliculas[i].ano_estreno << endl;
+        }
+    } else {
+        // Si seleccionó orden descendente se escribe al revés
+        for (int i = cant_peliculas - 1; i >= 0; i--) {
+            archivo << peliculas[i].nombre << " - " << peliculas[i].ano_estreno << endl;
+        }
+    }
+    archivo.close();
+}
+
 // Función para ordenar películas por año de estreno de forma ascendente (si hay empate, por nombre)
 void ordenarPeliculas(Pelicula peliculas[], int cant_peliculas) {
     for (int i = 0; i < cant_peliculas - 1; i++) {
