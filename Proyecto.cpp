@@ -31,8 +31,8 @@ struct Serie{
 //Declaracion Funciones
 void menuPrincipal(Pelicula peliculas[], Serie series[], int cant_peliculas, int cant_series);
 void menuFiltrar(Pelicula peliculas[], Serie series[], int cant_peliculas, int cant_series);
-int leerPeliculas(string nombre_archivo, Pelicula peliculas[]);
-int leerSeries(string nombre_archivo, Serie series[]);
+int leerPeliculas(Pelicula peliculas[]);
+int leerSeries(Serie series[]);
 void crearPelicula(Pelicula peliculas[], int cant_peliculas);
 bool nombreValidoPelicula(string nombre, Pelicula peliculas[], int cant_peliculas);
 bool sonIgualesSinMayusculas(string str1, string str2);
@@ -60,7 +60,6 @@ int main() {
 // Función para mostrar el menú principal y redirigir a las opciones seleccionadas
 void menuPrincipal(Pelicula peliculas[], Serie series[], int cant_peliculas, int cant_series) {
     int opcion = 0;
-    string nombre_archivo;
     do {
         cout << "MENU PRINCIPAL" << endl;
         cout << "1. Leer películas de un archivo" << endl;
@@ -77,14 +76,10 @@ void menuPrincipal(Pelicula peliculas[], Serie series[], int cant_peliculas, int
 
         switch (opcion) {
             case 1:
-                cout << "Ingrese el nombre del archivo de películas: ";
-                cin >> nombre_archivo;
-                cant_peliculas = leerPeliculas(nombre_archivo, peliculas);
+                cant_peliculas = leerPeliculas(peliculas);
                 break;
             case 2:
-                cout << "Ingrese el nombre del archivo de series: ";
-                cin >> nombre_archivo;
-                cant_series = leerSeries(nombre_archivo, series);
+                cant_series = leerSeries(series);
                 break;
             case 3:
                 crearPelicula(peliculas, cant_peliculas);
@@ -149,10 +144,15 @@ void menuFiltrar(Pelicula peliculas[], Serie series[], int cant_peliculas, int c
 }
 
 //Funcion para leer las peliculas del archivo
-int leerPeliculas(string nombre_archivo, Pelicula peliculas[]) {
-    ifstream archivo(nombre_archivo);
-    string linea;
+int leerPeliculas(Pelicula peliculas[]) {
+    string linea, nombre_archivo;
     int contador = 0;
+
+    cout << "Ingrese el nombre del archivo de películas: ";
+    cin.ignore();
+    getline(cin, nombre_archivo);
+
+    ifstream archivo(nombre_archivo);
 
     if (!archivo.is_open()) {
         cerr << "No se pudo abrir el archivo " << nombre_archivo << endl;
@@ -194,10 +194,15 @@ int leerPeliculas(string nombre_archivo, Pelicula peliculas[]) {
 }
 
 //Funcion para leer las series del archivo
-int leerSeries(string nombre_archivo, Serie series[]) {
-    ifstream archivo(nombre_archivo);
-    string linea;
+int leerSeries(Serie series[]) {
+    string nombre_archivo, linea;
     int contador = 0;
+
+    cout << "Ingrese el nombre del archivo de series: ";
+    cin.ignore();
+    getline(cin, nombre_archivo);
+
+    ifstream archivo(nombre_archivo);
 
     if (!archivo.is_open()) {
         cerr << "No se pudo abrir el archivo " << nombre_archivo << endl;
