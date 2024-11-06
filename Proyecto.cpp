@@ -409,3 +409,42 @@ void listarCapitulosPorTemporada(Serie series[], int cant_series) {
         }
     }
 }
+
+// Función para filtrar series y películas por género
+void filtrarPorGenero(Pelicula peliculas[], Serie series[], int cant_peliculas, int cant_series) {
+    string genero;
+    bool valido = false;
+
+    // Solicitar un género válido
+    do {
+        cout << "Ingrese el genero por el que desea filtrar: ";
+        cin >> genero;
+        if (genero.empty()) {
+            cout << "EL GENERO NO PUEDE ESTAR VACIO, INTENTE DE NUEVO." << endl;
+        } else {
+            valido = true;
+        }
+    } while (!valido);
+
+    // Mostrar las películas que coincidan con el género
+    cout << "Peliculas que son del género " << genero << ":" << endl;
+    for (int i = 0; i < cant_peliculas; i++) {
+        for (int j = 0; j < peliculas[i].cant_generos; j++) {
+            if (sonIgualesSinMayusculas(peliculas[i].generos[j], genero)) {
+                cout << "Nombre: " << peliculas[i].nombre << endl;
+                break;
+            }
+        }
+    }
+
+    // Mostrar las series que coincidan con el género
+    cout << "Series que son del género " << genero << ":" << endl;
+    for (int i = 0; i < cant_series; i++) {
+        for (int j = 0; j < series[i].cant_generos; j++) {
+            if (sonIgualesSinMayusculas(series[i].generos[j], genero)) {
+                cout << "Nombre: " << series[i].nombre << endl;
+                break;
+            }
+        }
+    }
+}
