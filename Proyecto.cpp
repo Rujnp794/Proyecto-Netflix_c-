@@ -287,7 +287,7 @@ bool nombreValidoSerie(string nombre, Serie series[], int cant_series) {
 }
 
 //Añadir un nuevo capitulo a una serie que ya existe
-void agregarCapitulo(Serie series[]){
+void agregarCapitulo(Serie series[], int cant_series) {
     // Crear una instancia de Capitulo
     Capitulo capitulo;
     string nombre_serie;
@@ -301,7 +301,7 @@ void agregarCapitulo(Serie series[]){
         if (nombre_serie.empty()) {
             cout << "EL NOMBRE DE LA SERIE NO PUEDE ESTAR VACIO, INTENTE DE NUEVO." << endl;
         } else {
-            pos_serie = buscarSerie(nombre_serie, series);
+            pos_serie = buscarSerie(nombre_serie, series, cant_series);
             if (pos_serie == -1) {
                 cout << "ESTA SERIE NO EXISTE, INTENTE DE NUEVO." << endl;
             } else {
@@ -312,7 +312,6 @@ void agregarCapitulo(Serie series[]){
 
     // Solicitar un nuevo capítulo hasta que el usuario decida parar
     do {
-        valido = false;
         // Solicitar un nombre válido para el capítulo
         do {
             cout << "Ingrese el nombre del capítulo: ";
