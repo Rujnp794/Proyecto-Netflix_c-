@@ -510,4 +510,22 @@ void filtrarPorRangoAnos(Pelicula peliculas[], int cant_peliculas) {
     }
 }
 
+// Función para ordenar películas por año de estreno de forma ascendente (si hay empate, por nombre)
+void ordenarPeliculas(Pelicula peliculas[], int cant_peliculas) {
+    for (int i = 0; i < cant_peliculas - 1; i++) {
+        for (int j = i + 1; j < cant_peliculas; j++) {
+            if (peliculas[i].ano_estreno > peliculas[j].ano_estreno) {
+                Pelicula temp = peliculas[i];
+                peliculas[i] = peliculas[j];
+                peliculas[j] = temp;
+            } else if (peliculas[i].ano_estreno == peliculas[j].ano_estreno) {
+                if (peliculas[i].nombre > peliculas[j].nombre) {
+                    Pelicula temp = peliculas[i];
+                    peliculas[i] = peliculas[j];
+                    peliculas[j] = temp;
+                }
+            }
+        }
+    }
+}
 
