@@ -3,27 +3,26 @@
 #include <fstream>
 #include <sstream>
 
-
 using namespace std;
 
 struct Pelicula {
-    string Nombre;
-    int Duracion; //en minutos
-    string Genero;
+    string nombre;
+    int duracion; //en minutos
+    string generos;
     int ano_estreno;
 };
 
 struct Capitulo{
-    string Nombre;
-    int Duracion; //en minutos
+    string nombre;
+    int duracion; //en minutos
     int Temporada;
 };
 
 struct Serie{
-    string Nombre;
-    int Cant_capitulos;
-    int Num_temporadas;
-    string Genero;
+    string nombre;
+    int cant_capitulos;
+    int num_temporadas;
+    string generos;
     Capitulo capitulos[100];
 };
 
@@ -31,6 +30,8 @@ struct Serie{
 
 void leerPeliculas(string nombreArchivo, Pelicula peliculas[], int numPeliculas);
 void leerSeries(string nombreArchivo, Serie series[], int numSeries);
+void leerPeliculas(string nombre_archivo, Pelicula peliculas[]);
+void leerSeries(string nombre_archivo, Serie series[]);
 void crearPelicula(Pelicula peliculas[]);
 void crearSeries(Serie series[]);
 bool sonIgualesSinMayusculas(string str1,string str2);
@@ -39,7 +40,7 @@ bool existeSerie(string nombre_serie , Serie series[]);
 
 int main() {
     int opcion = 0;
-    string nombreArchivo;
+    string nombre_archivo;
 
     cout << "Bienvenido a Netflix" << endl;
     cout << "¿Que desea hacer?" << endl;   
@@ -55,17 +56,17 @@ int main() {
     case 1:
         {
             cout << "Digite el nombre del archivo de peliculas." << endl;
-            cin >> nombreArchivo;
+            cin >> nombre_archivo;
             Pelicula peliculas[100];
-            leerPeliculas(nombreArchivo, peliculas);
+            leerPeliculas(nombre_archivo, peliculas);
         }
         break;
     case 2:
         {
             cout << "Digite el nombre del archivo de series." << endl;
-            cin >> nombreArchivo;
+            cin >> nombre_archivo;
             Serie series[100];
-            leerSeries(nombreArchivo, series);
+            leerSeries(nombre_archivo, series);
         }
         break;
     default:
@@ -82,13 +83,13 @@ int main() {
 
 //Funcion para leer las peliculas del archivo
 
-void leerPeliculas(string nombreArchivo, Pelicula peliculas[]) {
-    ifstream archivo(nombreArchivo);
+void leerPeliculas(string nombre_archivo, Pelicula peliculas[]) {
+    ifstream archivo(nombre_archivo);
     string linea;
     int contador = 0;
 
     if (!archivo.is_open()) {
-        cerr << "No se pudo abrir el archivo " << nombreArchivo << endl;
+        cerr << "No se pudo abrir el archivo " << nombre_archivo << endl;
         return;
     }
 
@@ -107,10 +108,10 @@ void leerPeliculas(string nombreArchivo, Pelicula peliculas[]) {
         getline(ss, genero, ',');
 
         // Crear una instancia de Pelicula y agregarla al arreglo
-        peliculas[contador].Nombre = nombre;
-        peliculas[contador].Duracion = stoi(duracion);
+        peliculas[contador].nombre = nombre;
+        peliculas[contador].duracion = stoi(duracion);
         peliculas[contador].ano_estreno = stoi(ano_estreno);  
-        peliculas[contador].Genero = stoi(genero);
+        peliculas[contador].generos = stoi(genero);
     
         contador++;
     }
@@ -120,13 +121,13 @@ void leerPeliculas(string nombreArchivo, Pelicula peliculas[]) {
 
 //Funcion para leer las series del archivo
 
-void leerSeries(string nombreArchivo, Serie series[]) {
-    ifstream archivo(nombreArchivo);
+void leerSeries(string nombre_archivo, Serie series[]) {
+    ifstream archivo(nombre_archivo);
     string linea;
     int contador = 0;
 
     if (!archivo.is_open()) {
-        cerr << "No se pudo abrir el archivo " << nombreArchivo << endl;
+        cerr << "No se pudo abrir el archivo " << nombre_archivo << endl;
         return;
     }
 
@@ -145,10 +146,10 @@ void leerSeries(string nombreArchivo, Serie series[]) {
         getline(ss, genero, ',');
 
         // Crear una instancia de Serie y agregarla al arreglo
-        series[contador].Nombre = nombre;
-        series[contador].Cant_capitulos = stoi(cant_capitulos);
-        series[contador].Num_temporadas = stoi(num_temporadas);
-        series[contador].Genero = stoi(genero);
+        series[contador].nombre = nombre;
+        series[contador].cant_capitulos = stoi(cant_capitulos);
+        series[contador].num_temporadas = stoi(num_temporadas);
+        series[contador].generos = stoi(genero);
 
 
         contador++;
@@ -178,14 +179,14 @@ void crearPelicula(Pelicula peliculas[]) {
     // Crear una instancia de Pelicula
     Pelicula pelicula;
     // Inicializar los atributos de la pelicula
-    pelicula.Nombre = nombre;
-    pelicula.Duracion = duracion;
-    pelicula.Genero = genero;
+    pelicula.nombre = nombre;
+    pelicula.duracion = duracion;
+    pelicula.generos = genero;
     pelicula.ano_estreno = ano_estreno;
 
     //Revisar si la pelicula ya existe en la lista de peliculas
     for(int i = 0; i < 100; i++){
-        if(sonIgualesSinMayusculas(peliculas[i].Nombre, nombre)){
+        if(sonIgualesSinMayusculas(peliculas[i].nombre, nombre)){
             cout<<"La pelicula ya existe en la lista de peliculas"<<endl;
             valida = false;
         }
@@ -201,7 +202,7 @@ void crearPelicula(Pelicula peliculas[]) {
     if(valida){
         // Agregar la pelicula al arreglo de peliculas en la primera posicion disponible si la pelicula fue valida
         for(int i = 0; i < 100; i++){
-            if(peliculas[i].Nombre == ""){
+            if(peliculas[i].nombre == ""){
                 peliculas[i] = pelicula;
                 break;
             }
@@ -244,14 +245,14 @@ void crearSeries(Serie series[]) {
     // Crear una instancia de Serie
     Serie serie;
     // Inicializar los atributos de la serie
-    serie.Nombre = nombre;
-    serie.Cant_capitulos = cant_capitulos;
-    serie.Num_temporadas = num_temporadas;
-    serie.Genero = genero;
+    serie.nombre = nombre;
+    serie.cant_capitulos = cant_capitulos;
+    serie.num_temporadas = num_temporadas;
+    serie.generos = genero;
 
     //Revisar si la serie ya existe en la lista de series
     for(int i = 0; i < 100; i++){
-        if(sonIgualesSinMayusculas(series[i].Nombre, nombre)){
+        if(sonIgualesSinMayusculas(series[i].nombre, nombre)){
             cout<<"La serie ya existe en la lista de series"<<endl;
             valida = false;
         }
@@ -267,7 +268,7 @@ void crearSeries(Serie series[]) {
     if(valida){
         // Agregar la serie al arreglo de series en la primera posicion disponible si la serie fue valida
         for(int i = 0; i < 100; i++){
-            if(series[i].Nombre == ""){
+            if(series[i].nombre == ""){
                 series[i] = serie;
                 break;
             }
@@ -313,16 +314,16 @@ void AgregarCapitulo(Serie series[]){
         parar = true;
         //Agregar el capitulo a la serie
         for(int i = 0; i < 100; i++){
-            if(sonIgualesSinMayusculas(series[i].Nombre, nombre_serie)){
+            if(sonIgualesSinMayusculas(series[i].nombre, nombre_serie)){
                 for(int j = 0; j < 100; j++){
-                    if(series[i].capitulos[j].Nombre == ""){
-                        series[i].capitulos[j].Nombre = nombre_capitulo;
-                        series[i].capitulos[j].Duracion = duracion;
+                    if(series[i].capitulos[j].nombre == ""){
+                        series[i].capitulos[j].nombre = nombre_capitulo;
+                        series[i].capitulos[j].duracion = duracion;
                         series[i].capitulos[j].Temporada = temporada;
                         break;
                     }
                 }
-                series[i].Cant_capitulos++;
+                series[i].cant_capitulos++;
             }
             
         }
@@ -339,7 +340,7 @@ void AgregarCapitulo(Serie series[]){
 
 bool existeSerie(string nombre_serie , Serie series[]){
     for(int i = 0; i < 100; i++){
-        if(sonIgualesSinMayusculas(series[i].Nombre, nombre_serie)){
+        if(sonIgualesSinMayusculas(series[i].nombre, nombre_serie)){
             return true;
         }
     }
