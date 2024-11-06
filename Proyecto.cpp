@@ -28,8 +28,6 @@ struct Serie{
 
 //Declaracion Funciones
 
-void leerPeliculas(string nombreArchivo, Pelicula peliculas[], int numPeliculas);
-void leerSeries(string nombreArchivo, Serie series[], int numSeries);
 void leerPeliculas(string nombre_archivo, Pelicula peliculas[]);
 void leerSeries(string nombre_archivo, Serie series[]);
 void crearPelicula(Pelicula peliculas[]);
