@@ -156,7 +156,7 @@ int leerPeliculas(string nombre_archivo, Pelicula peliculas[]) {
 
     if (!archivo.is_open()) {
         cerr << "No se pudo abrir el archivo " << nombre_archivo << endl;
-        return;
+        return 0;
     }
 
     // Leer la primera línea que contiene los encabezados
@@ -201,7 +201,7 @@ int leerSeries(string nombre_archivo, Serie series[]) {
 
     if (!archivo.is_open()) {
         cerr << "No se pudo abrir el archivo " << nombre_archivo << endl;
-        return;
+        return 0;
     }
 
     // Leer la primera línea que contiene los encabezados
